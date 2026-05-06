@@ -5,6 +5,14 @@ const defaultProviderSettings = {
   baseUrl: 'https://api.openai.com/v1',
   apiKey: '',
   model: 'gpt-4.1-mini',
+  wireApi: 'chat',
+  systemPrompt: [
+    'You are Lingo Capsule, a quiet English writing companion for bilingual professionals.',
+    'Diagnose whether the user text is already natural English or needs improvement.',
+    'Preserve the user intent. Do not over-formalize. Return concise Chinese explanations.',
+    'If improvement is useful, provide at most two rewrites: one Casual and one Professional.',
+    'If the text is already natural, return status native, no issues, and no suggestions.',
+  ].join('\n'),
 };
 
 const defaultInteractionSettings = {
@@ -16,13 +24,13 @@ function normalizeBaseUrl(baseUrl) {
   return (baseUrl || defaultProviderSettings.baseUrl).trim().replace(/\/+$/, '');
 }
 
-function buildPrompt(text) {
+function normalizeWireApi(wireApi) {
+  return wireApi === 'responses' ? 'responses' : 'chat';
+}
+
+function buildPrompt(text, settings = defaultProviderSettings) {
   return [
-    'You are Lingo Capsule, a quiet English writing companion for bilingual professionals.',
-    'Diagnose whether the user text is already natural English or needs improvement.',
-    'Preserve the user intent. Do not over-formalize. Return concise Chinese explanations.',
-    'If improvement is useful, provide at most two rewrites: one Casual and one Professional.',
-    'If the text is already natural, return status native, no issues, and no suggestions.',
+    settings.systemPrompt?.trim() || defaultProviderSettings.systemPrompt,
     '',
     'User text:',
     text,
@@ -154,27 +162,49 @@ async function analyzeWithProvider(text, settings) {
     return demoCorrection(text);
   }
 
-  const response = await fetch(`${normalizeBaseUrl(settings.baseUrl)}/chat/completions`, {
+  const wireApi = normalizeWireApi(settings.wireApi);
+  const baseUrl = normalizeBaseUrl(settings.baseUrl);
+  const model = settings.model?.trim() || defaultProviderSettings.model;
+  const response = await fetch(`${baseUrl}/${wireApi === 'responses' ? 'responses' : 'chat/completions'}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${settings.apiKey.trim()}`,
     },
-    body: JSON.stringify({
-      model: settings.model?.trim() || defaultProviderSettings.model,
-      temperature: 0.2,
-      messages: [
-        {
-          role: 'system',
-          content: 'Return only JSON with status, summaryZh, confidence, issues, and suggestions. Keep Chinese explanations concise and supportive.',
-        },
-        {
-          role: 'user',
-          content: buildPrompt(text),
-        },
-      ],
-      response_format: { type: 'json_object' },
-    }),
+    body: JSON.stringify(
+      wireApi === 'responses'
+        ? {
+            model,
+            input: [
+              {
+                role: 'system',
+                content: 'Return only JSON with status, summaryZh, confidence, issues, and suggestions. Keep Chinese explanations concise and supportive.',
+              },
+              {
+                role: 'user',
+                content: buildPrompt(text, settings),
+              },
+            ],
+            text: {
+              format: { type: 'json_object' },
+            },
+          }
+        : {
+            model,
+            temperature: 0.2,
+            messages: [
+              {
+                role: 'system',
+                content: 'Return only JSON with status, summaryZh, confidence, issues, and suggestions. Keep Chinese explanations concise and supportive.',
+              },
+              {
+                role: 'user',
+                content: buildPrompt(text, settings),
+              },
+            ],
+            response_format: { type: 'json_object' },
+          },
+    ),
   });
 
   const payload = await response.json().catch(() => ({}));
@@ -182,13 +212,35 @@ async function analyzeWithProvider(text, settings) {
     throw new Error(payload.error?.message || `Provider request failed with HTTP ${response.status}.`);
   }
 
-  const content = payload.choices?.[0]?.message?.content;
+  const content =
+    wireApi === 'responses'
+      ? extractResponsesOutputText(payload)
+      : payload.choices?.[0]?.message?.content;
   if (!content) {
     throw new Error('Provider returned no correction content.');
   }
 
   const match = content.match(/\{[\s\S]*\}/);
   return coerceCorrectionResult(JSON.parse(match ? match[0] : content));
+}
+
+function extractResponsesOutputText(payload) {
+  if (typeof payload.output_text === 'string' && payload.output_text.trim()) {
+    return payload.output_text;
+  }
+
+  for (const item of payload.output || []) {
+    for (const content of item.content || []) {
+      if (content.type === 'output_text' && typeof content.text === 'string') {
+        return content.text;
+      }
+      if (content.type === 'text' && typeof content.text === 'string') {
+        return content.text;
+      }
+    }
+  }
+
+  return '';
 }
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {

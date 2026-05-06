@@ -15,7 +15,11 @@ handles the practical input capture path for `input`, `textarea`, and common
 - Without an API key, the extension uses the same deterministic demo correction
   patterns as the web preview.
 - With an OpenAI-compatible API key in the extension options page, the extension
-  calls `/chat/completions` directly from the browser extension service worker.
+  calls the configured provider directly from the browser extension service
+  worker.
+- The extension options page owns the Windows browser provider settings: base
+  URL, API type, model, API key, prompt, trigger symbols, and trigger buffer
+  length.
 - The Windows Tauri build keeps the local history/settings shell available and
   uses clipboard capture/copy as the non-macOS fallback.
 
@@ -41,7 +45,10 @@ Manual test flow:
 4. Download and unzip `LingoCapsule-Browser-Extension`.
 5. In Chrome or Edge, open `extensions`, enable developer mode, and choose
    `Load unpacked` with the unzipped extension folder.
-6. Open any browser text box and type:
+6. Open the LingoCapsule extension options page and configure the provider if
+   you want real model calls. Leave the API key empty for deterministic demo
+   corrections.
+7. Open any browser text box and type:
 
 ```text
 I am agree this happend today~~

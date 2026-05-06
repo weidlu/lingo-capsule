@@ -7,6 +7,7 @@ export interface ProviderSettings {
   apiKey: string;
   model: string;
   wireApi?: 'chat' | 'responses';
+  systemPrompt: string;
 }
 
 export interface InteractionSettings {
@@ -176,13 +177,22 @@ export function normalizeProviderBaseUrl(baseUrl: string): string {
   return trimmed || 'https://api.openai.com/v1';
 }
 
-export function buildCorrectionPrompt(text: string): string {
+export const DEFAULT_CORRECTION_PROMPT = [
+  'You are Lingo Capsule, a quiet English writing companion for bilingual professionals.',
+  'Diagnose whether the user text is already natural English or needs improvement.',
+  'Preserve the user intent. Do not over-formalize. Return concise Chinese explanations.',
+  'If improvement is useful, provide at most two rewrites: one Casual and one Professional.',
+  'If the text is already natural, return status native, no issues, and no suggestions.',
+].join('\n');
+
+export function normalizeCorrectionPrompt(prompt: string): string {
+  const trimmed = prompt.trim();
+  return trimmed || DEFAULT_CORRECTION_PROMPT;
+}
+
+export function buildCorrectionPrompt(text: string, prompt = DEFAULT_CORRECTION_PROMPT): string {
   return [
-    'You are Lingo Capsule, a quiet English writing companion for bilingual professionals.',
-    'Diagnose whether the user text is already natural English or needs improvement.',
-    'Preserve the user intent. Do not over-formalize. Return concise Chinese explanations.',
-    'If improvement is useful, provide at most two rewrites: one Casual and one Professional.',
-    'If the text is already natural, return status native, no issues, and no suggestions.',
+    normalizeCorrectionPrompt(prompt),
     '',
     'User text:',
     text,

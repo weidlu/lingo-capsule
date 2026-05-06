@@ -31,7 +31,9 @@ import {
   loadInteractionSettings,
   loadProviderSettings,
   normalizeInteractionSettings,
+  normalizeProviderSettings,
   saveInteractionSettings,
+  saveProviderSettings,
 } from "./services/settingsStore";
 import { canUseTauriCommands } from "./services/tauriRuntime";
 import {
@@ -70,6 +72,7 @@ const controlFlagMask = 1 << 18;
 const optionFlagMask = 1 << 19;
 const keyboardBufferIdleResetMs = 120_000;
 const dailyReviewStateKey = "lingo-capsule.daily-review-state.v1";
+const platform = navigator.userAgent.includes("Windows") ? "windows" : "other";
 const macKeyCodeLabels: Record<number, string> = {
   0: "a",
   1: "s",
@@ -141,7 +144,10 @@ interface DailyReviewState {
 function emptyState(): CorrectionPipelineState {
   return {
     phase: "idle",
-    message: "Start typing and pause for a moment.",
+    message:
+      platform === "windows"
+        ? "Use the Chrome or Edge extension for browser input feedback."
+        : "Start typing and pause for a moment.",
   };
 }
 
@@ -185,7 +191,7 @@ function capsuleDisplay(state: CorrectionPipelineState) {
     return {
       tone: "failed",
       label: "Need Access",
-      detail: "Enable macOS",
+      detail: platform === "windows" ? "Use extension" : "Enable macOS",
     };
   }
 
@@ -209,7 +215,7 @@ function capsuleDisplay(state: CorrectionPipelineState) {
   return {
     tone: "idle",
     label: "Ready",
-    detail: "Watching input",
+    detail: platform === "windows" ? "Browser extension" : "Watching input",
   };
 }
 
@@ -691,12 +697,18 @@ function App() {
     canUseTauriCommands() ? "" : exampleText,
   );
   const [sourceContext, setSourceContext] = useState(
-    canUseTauriCommands() ? "Active input" : "Browser preview",
+    platform === "windows"
+      ? "Browser extension"
+      : canUseTauriCommands()
+        ? "Active input"
+        : "Browser preview",
   );
   const [latestCapture, setLatestCapture] = useState<CaptureResult | null>(
     null,
   );
-  const [settings] = useState<ProviderSettings>(() => loadProviderSettings());
+  const [settings, setSettings] = useState<ProviderSettings>(() =>
+    loadProviderSettings(),
+  );
   const [interactionSettings, setInteractionSettings] =
     useState<InteractionSettings>(() => loadInteractionSettings());
   const [pipelineState, setPipelineState] =
@@ -767,6 +779,17 @@ function App() {
         ...patch,
       });
       saveInteractionSettings(next);
+      return next;
+    });
+  };
+
+  const updateProviderSettings = (patch: Partial<ProviderSettings>) => {
+    setSettings((current) => {
+      const next = normalizeProviderSettings({
+        ...current,
+        ...patch,
+      });
+      saveProviderSettings(next);
       return next;
     });
   };
@@ -902,12 +925,12 @@ function App() {
     suppressedText.current = null;
     setCapturedText("");
     setLatestCapture(null);
-    setSourceContext("Active input");
+    setSourceContext(platform === "windows" ? "Browser extension" : "Active input");
     setPipelineState(emptyState());
   };
 
   useEffect(() => {
-    if (!canUseTauriCommands()) {
+    if (!canUseTauriCommands() || platform === "windows") {
       return;
     }
 
@@ -1079,7 +1102,7 @@ function App() {
   ]);
 
   useEffect(() => {
-    if (!canUseTauriCommands()) {
+    if (!canUseTauriCommands() || platform === "windows") {
       return;
     }
 
@@ -1110,7 +1133,7 @@ function App() {
   }, [latestCapture?.focusedFrame, manualVisible]);
 
   useEffect(() => {
-    if (!canUseTauriCommands() || !manualVisible) {
+    if (!canUseTauriCommands() || !manualVisible || platform === "windows") {
       return;
     }
 
@@ -1126,6 +1149,7 @@ function App() {
     async function pollFocusedInput() {
       if (
         !canUseTauriCommands() ||
+        platform === "windows" ||
         modeRef.current !== "capsule" ||
         !interactionSettings.autoModeEnabled ||
         explicitCaptureActive.current
@@ -1641,6 +1665,90 @@ function App() {
               <section className="settings-page" aria-label="Lingo settings">
                 <section
                   className="settings-panel"
+                  aria-label="Provider settings"
+                >
+                  <div className="settings-head">
+                    <strong>Provider</strong>
+                    <span>model + prompt</span>
+                  </div>
+
+                  <div className="settings-grid wide">
+                    <label>
+                      <span>Base URL</span>
+                      <input
+                        value={settings.baseUrl}
+                        onChange={(event) =>
+                          updateProviderSettings({
+                            baseUrl: event.currentTarget.value,
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      <span>API type</span>
+                      <select
+                        value={settings.wireApi || "responses"}
+                        onChange={(event) =>
+                          updateProviderSettings({
+                            wireApi: event.currentTarget.value as
+                              | "chat"
+                              | "responses",
+                          })
+                        }
+                      >
+                        <option value="responses">Responses</option>
+                        <option value="chat">Chat</option>
+                      </select>
+                    </label>
+                  </div>
+
+                  <div className="settings-grid wide">
+                    <label>
+                      <span>Model</span>
+                      <input
+                        value={settings.model}
+                        onChange={(event) =>
+                          updateProviderSettings({
+                            model: event.currentTarget.value,
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      <span>API key</span>
+                      <input
+                        type="password"
+                        value={settings.apiKey}
+                        onChange={(event) =>
+                          updateProviderSettings({
+                            apiKey: event.currentTarget.value,
+                          })
+                        }
+                      />
+                    </label>
+                  </div>
+
+                  <label className="settings-field">
+                    <span>Prompt</span>
+                    <textarea
+                      rows={6}
+                      value={settings.systemPrompt}
+                      onChange={(event) =>
+                        updateProviderSettings({
+                          systemPrompt: event.currentTarget.value,
+                        })
+                      }
+                    />
+                  </label>
+
+                  <p className="settings-note">
+                    Windows browser inputs use the Chrome/Edge extension. Keep
+                    this provider copied into the extension options for now.
+                  </p>
+                </section>
+
+                <section
+                  className="settings-panel"
                   aria-label="Interaction settings"
                 >
                   <div className="settings-head">
@@ -1660,7 +1768,11 @@ function App() {
                     />
                     <span>
                       <strong>Readable inputs</strong>
-                      <small>Use Accessibility after a typing pause</small>
+                      <small>
+                        {platform === "windows"
+                          ? "Handled by the browser extension"
+                          : "Use Accessibility after a typing pause"}
+                      </small>
                     </span>
                   </label>
 

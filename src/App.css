@@ -646,7 +646,9 @@ button:focus-visible {
   font-weight: 780;
 }
 
-.settings-grid input {
+.settings-grid input,
+.settings-grid select,
+.settings-field textarea {
   width: 100%;
   min-height: 32px;
   padding: 5px 8px;
@@ -657,6 +659,32 @@ button:focus-visible {
   font: inherit;
   font-size: 0.78rem;
   font-weight: 690;
+}
+
+.settings-field {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+}
+
+.settings-field span {
+  color: #53605b;
+  font-size: 0.72rem;
+  font-weight: 780;
+}
+
+.settings-field textarea {
+  min-height: 116px;
+  line-height: 1.35;
+  resize: vertical;
+}
+
+.settings-note {
+  margin: 0;
+  color: #66726d;
+  font-size: 0.72rem;
+  font-weight: 650;
+  line-height: 1.35;
 }
 
 .review-now {

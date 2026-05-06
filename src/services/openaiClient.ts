@@ -72,7 +72,7 @@ export async function analyzeTextWithProvider(text: string, settings: ProviderSe
         },
         {
           role: 'user',
-          content: buildCorrectionPrompt(text),
+          content: buildCorrectionPrompt(text, settings.systemPrompt),
         },
       ],
       response_format: {

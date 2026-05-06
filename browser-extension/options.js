@@ -6,6 +6,14 @@ const defaults = {
     baseUrl: 'https://api.openai.com/v1',
     apiKey: '',
     model: 'gpt-4.1-mini',
+    wireApi: 'chat',
+    systemPrompt: [
+      'You are Lingo Capsule, a quiet English writing companion for bilingual professionals.',
+      'Diagnose whether the user text is already natural English or needs improvement.',
+      'Preserve the user intent. Do not over-formalize. Return concise Chinese explanations.',
+      'If improvement is useful, provide at most two rewrites: one Casual and one Professional.',
+      'If the text is already natural, return status native, no issues, and no suggestions.',
+    ].join('\n'),
   },
   interaction: {
     triggerTokens: '~~, ～～',
@@ -30,6 +38,8 @@ async function loadSettings() {
   form.baseUrl.value = provider.baseUrl;
   form.apiKey.value = provider.apiKey;
   form.model.value = provider.model;
+  form.wireApi.value = provider.wireApi === 'responses' ? 'responses' : 'chat';
+  form.systemPrompt.value = provider.systemPrompt || defaults.provider.systemPrompt;
   form.triggerTokens.value = interaction.triggerTokens;
   form.triggerMaxChars.value = interaction.triggerMaxChars;
 }
@@ -41,6 +51,8 @@ form.addEventListener('submit', async (event) => {
       baseUrl: form.baseUrl.value.trim() || defaults.provider.baseUrl,
       apiKey: form.apiKey.value.trim(),
       model: form.model.value.trim() || defaults.provider.model,
+      wireApi: form.wireApi.value === 'responses' ? 'responses' : 'chat',
+      systemPrompt: form.systemPrompt.value.trim() || defaults.provider.systemPrompt,
     },
     [interactionSettingsKey]: {
       triggerTokens: form.triggerTokens.value.trim() || defaults.interaction.triggerTokens,

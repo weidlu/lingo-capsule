@@ -18,6 +18,7 @@ This repo now contains a Tauri 2 + React MVP shell:
 - bundled app icon assets
 - documented macOS launch compatibility tiers, Chrome-first launch gate, and deferred surface-family matrix
 - Windows packaging through GitHub Actions, with Chrome/Edge extension support for browser input fields
+- Chrome/Edge extension options for provider base URL, API type, model, API key, prompt, trigger symbols, and trigger buffer length
 
 ## Commands
 
@@ -90,8 +91,12 @@ correction history already created by normal checks.
 
 Windows support starts with browser inputs. Install the Windows desktop bundle
 from the GitHub `Build installers` workflow, then load the Chrome/Edge extension
-artifact from the same workflow. In a browser text box, type a configured trigger
-such as `~~` or `～～` after a draft:
+artifact from the same workflow. Configure the extension from its Options page:
+
+- Provider base URL, API type, model, API key, and prompt
+- Trigger symbols and the maximum text length sent for analysis
+
+In a browser text box, type a configured trigger such as `~~` or `～～` after a draft:
 
 ```text
 I am agree this happend today~~
@@ -112,3 +117,4 @@ src-tauri/target/debug/bundle/macos/LingoCapsule.app
 - `docs/user-intent-ux-thesis.md` — user-intent and UX thesis distilled from `spark.md`.
 - `docs/founder-first-macos-mvp.md` — macOS-first MVP scope, architecture, launch matrix, and canonical execution queue.
 - `docs/macos-launch-compatibility.md` — `YB-99` compatibility tiers, Chrome-first launch gate, and manual QA script.
+- `docs/grammarly-interaction-research.md` — black-box Grammarly interaction research and the Grammarly-lite architecture direction.

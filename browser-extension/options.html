@@ -30,12 +30,23 @@
           <input id="baseUrl" name="baseUrl" autocomplete="off" />
         </label>
         <label>
+          API type
+          <select id="wireApi" name="wireApi">
+            <option value="chat">Chat Completions</option>
+            <option value="responses">Responses</option>
+          </select>
+        </label>
+        <label>
           Model
           <input id="model" name="model" autocomplete="off" />
         </label>
         <label>
           API key
           <input id="apiKey" name="apiKey" type="password" autocomplete="off" />
+        </label>
+        <label>
+          Prompt
+          <textarea id="systemPrompt" name="systemPrompt" rows="8"></textarea>
         </label>
         <div class="actions">
           <button type="submit">Save</button>

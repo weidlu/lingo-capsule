@@ -1,4 +1,9 @@
-import { InteractionSettings, ProviderSettings } from '../domain/correction';
+import {
+  DEFAULT_CORRECTION_PROMPT,
+  InteractionSettings,
+  ProviderSettings,
+  normalizeCorrectionPrompt,
+} from '../domain/correction';
 
 const providerSettingsKey = 'lingo-capsule.provider-settings.v1';
 const interactionSettingsKey = 'lingo-capsule.interaction-settings.v1';
@@ -9,6 +14,7 @@ export const defaultProviderSettings: ProviderSettings = {
   apiKey: '',
   model: 'gpt-5.4-mini',
   wireApi: 'responses',
+  systemPrompt: DEFAULT_CORRECTION_PROMPT,
 };
 
 export const defaultInteractionSettings: InteractionSettings = {
@@ -32,17 +38,32 @@ function clampNumber(value: unknown, fallback: number, min: number, max: number)
 
 export function loadProviderSettings(): ProviderSettings {
   try {
-    return {
+    const merged = {
       ...defaultProviderSettings,
       ...(JSON.parse(window.localStorage.getItem(providerSettingsKey) || '{}') as Partial<ProviderSettings>),
     };
+    return normalizeProviderSettings(merged);
   } catch {
     return defaultProviderSettings;
   }
 }
 
 export function saveProviderSettings(settings: ProviderSettings) {
-  window.localStorage.setItem(providerSettingsKey, JSON.stringify(settings));
+  window.localStorage.setItem(providerSettingsKey, JSON.stringify(normalizeProviderSettings(settings)));
+}
+
+export function normalizeProviderSettings(settings: Partial<ProviderSettings>): ProviderSettings {
+  const wireApi = settings.wireApi === 'chat' ? 'chat' : 'responses';
+
+  return {
+    ...defaultProviderSettings,
+    ...settings,
+    baseUrl: (settings.baseUrl || defaultProviderSettings.baseUrl).trim().replace(/\/+$/, ''),
+    apiKey: settings.apiKey || '',
+    model: (settings.model || defaultProviderSettings.model).trim(),
+    wireApi,
+    systemPrompt: normalizeCorrectionPrompt(settings.systemPrompt || ''),
+  };
 }
 
 export function loadInteractionSettings(): InteractionSettings {
