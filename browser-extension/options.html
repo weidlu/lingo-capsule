@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LingoCapsule Options</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main>
+      <section class="hero">
+        <span class="dot"></span>
+        <div>
+          <h1>LingoCapsule</h1>
+          <p>Chrome and Edge writing feedback for Windows browser inputs.</p>
+        </div>
+      </section>
+
+      <form id="settings-form">
+        <label>
+          Trigger tokens
+          <input id="triggerTokens" name="triggerTokens" autocomplete="off" />
+        </label>
+        <label>
+          Trigger max characters
+          <input id="triggerMaxChars" name="triggerMaxChars" type="number" min="80" max="4000" step="10" />
+        </label>
+        <label>
+          Provider base URL
+          <input id="baseUrl" name="baseUrl" autocomplete="off" />
+        </label>
+        <label>
+          Model
+          <input id="model" name="model" autocomplete="off" />
+        </label>
+        <label>
+          API key
+          <input id="apiKey" name="apiKey" type="password" autocomplete="off" />
+        </label>
+        <div class="actions">
+          <button type="submit">Save</button>
+          <span id="status"></span>
+        </div>
+      </form>
+    </main>
+    <script src="options.js"></script>
+  </body>
+</html>

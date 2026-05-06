@@ -39,9 +39,7 @@
   },
   "bundle": {
     "active": true,
-    "targets": [
-      "app"
-    ],
+    "targets": "all",
     "category": "Productivity",
     "shortDescription": "Quiet English feedback companion",
     "longDescription": "LingoCapsule is a floating desktop companion that turns real English writing into deliberate practice without interrupting the primary workflow.",

@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "LingoCapsule Browser Coach",
+  "version": "0.1.0",
+  "description": "Lightweight English feedback for Chrome and Edge text boxes.",
+  "permissions": ["storage", "clipboardWrite"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["contentScript.js"],
+      "css": ["contentStyles.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "options_page": "options.html",
+  "action": {
+    "default_title": "LingoCapsule"
+  }
+}

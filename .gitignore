@@ -1,5 +1,6 @@
 node_modules/
 dist/
+artifacts/
 dist-ssr/
 target/
 src-tauri/target/

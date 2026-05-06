@@ -1,6 +1,6 @@
 # lingo-capsule
 
-LingoCapsule is a macOS-first desktop companion that gives quiet English writing feedback without taking over the user's primary app.
+LingoCapsule is a desktop and browser companion that gives quiet English writing feedback without taking over the user's primary app.
 
 ## Current Shell
 
@@ -17,6 +17,7 @@ This repo now contains a Tauri 2 + React MVP shell:
 - daily local review card that summarizes today's repeated correction patterns
 - bundled app icon assets
 - documented macOS launch compatibility tiers, Chrome-first launch gate, and deferred surface-family matrix
+- Windows packaging through GitHub Actions, with Chrome/Edge extension support for browser input fields
 
 ## Commands
 
@@ -26,6 +27,7 @@ pnpm dev
 pnpm build
 cargo check --manifest-path src-tauri/Cargo.toml
 pnpm tauri build --debug
+pnpm extension:package
 ```
 
 ## Real Provider Test
@@ -83,6 +85,21 @@ reopen the app.
 Daily review runs while the app is open. It reads local correction history,
 summarizes today's repeated patterns, and never sends extra data beyond the
 correction history already created by normal checks.
+
+## Windows Browser Support
+
+Windows support starts with browser inputs. Install the Windows desktop bundle
+from the GitHub `Build installers` workflow, then load the Chrome/Edge extension
+artifact from the same workflow. In a browser text box, type a configured trigger
+such as `~~` or `～～` after a draft:
+
+```text
+I am agree this happend today~~
+```
+
+The extension removes the trigger token, analyzes the recent draft, and shows an
+in-page coach popover with a rewrite. See
+`docs/windows-browser-mvp.md` for the full download and test flow.
 
 `pnpm tauri build --debug` currently produces the debug `.app` bundle at:
 

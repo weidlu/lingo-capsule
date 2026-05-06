@@ -9,8 +9,10 @@
     "preview": "vite preview",
     "tauri": "tauri",
     "tauri:dev": "tauri dev",
-    "tauri:build": "tauri build && ./scripts/sign-macos-app.sh",
-    "tauri:install": "pnpm tauri:build && ditto src-tauri/target/release/bundle/macos/LingoCapsule.app /Applications/LingoCapsule.app && ./scripts/sign-macos-app.sh /Applications/LingoCapsule.app && open -a /Applications/LingoCapsule.app",
+    "tauri:build": "tauri build",
+    "tauri:build:mac": "tauri build && ./scripts/sign-macos-app.sh",
+    "tauri:install": "pnpm tauri:build:mac && ditto src-tauri/target/release/bundle/macos/LingoCapsule.app /Applications/LingoCapsule.app && ./scripts/sign-macos-app.sh /Applications/LingoCapsule.app && open -a /Applications/LingoCapsule.app",
+    "extension:package": "mkdir -p artifacts && cd browser-extension && zip -r ../artifacts/lingo-capsule-browser-extension.zip . -x '*.DS_Store'",
     "provider:configure": "./scripts/configure-provider-settings.sh"
   },
   "dependencies": {
