@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LingoCapsule - Expanded Suggestion Popover</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error": "#ba1a1a",
+                    "tertiary": "#000e0c",
+                    "surface-dim": "#dadada",
+                    "surface": "#f9f9f9",
+                    "primary-fixed-dim": "#bec9c4",
+                    "primary-container": "#1a2421",
+                    "background": "#f9f9f9",
+                    "tertiary-container": "#002723",
+                    "secondary-container": "#d3e3dd",
+                    "outline": "#737876",
+                    "on-primary-container": "#818c87",
+                    "inverse-surface": "#2f3131",
+                    "on-primary": "#ffffff",
+                    "surface-container-high": "#e8e8e8",
+                    "surface-bright": "#f9f9f9",
+                    "inverse-primary": "#bec9c4",
+                    "surface-tint": "#56615d",
+                    "surface-container-highest": "#e2e2e2",
+                    "surface-variant": "#e2e2e2",
+                    "surface-container-low": "#f3f3f3",
+                    "on-error": "#ffffff",
+                    "on-tertiary-fixed-variant": "#005049",
+                    "on-surface-variant": "#434846",
+                    "on-secondary-container": "#576661",
+                    "primary": "#050d0b",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-fixed": "#141e1b",
+                    "primary-fixed": "#dae5e0",
+                    "on-tertiary-fixed": "#00201d",
+                    "on-secondary-fixed-variant": "#3b4a45",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed": "#d6e6e0",
+                    "on-surface": "#1a1c1c",
+                    "inverse-on-surface": "#f1f1f1",
+                    "secondary-fixed-dim": "#bacac4",
+                    "on-primary-fixed-variant": "#3e4945",
+                    "on-background": "#1a1c1c",
+                    "secondary": "#53625d",
+                    "on-tertiary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed": "#84f5e8",
+                    "surface-container": "#eeeeee",
+                    "on-secondary": "#ffffff",
+                    "outline-variant": "#c3c8c5",
+                    "on-tertiary-container": "#079a8e",
+                    "on-secondary-fixed": "#101e1a",
+                    "tertiary-fixed-dim": "#66d9cc"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "padding-loose": "16px",
+                    "padding-standard": "12px",
+                    "gutter": "12px",
+                    "padding-tight": "8px",
+                    "unit": "4px",
+                    "popover-width": "360px",
+                    "capsule-width-range": "180px-240px",
+                    "capsule-height": "44px"
+            },
+            "fontFamily": {
+                    "body-main": [
+                            "Inter"
+                    ],
+                    "label-compact": [
+                            "Inter"
+                    ],
+                    "capsule-text": [
+                            "Inter"
+                    ],
+                    "hint-text": [
+                            "Inter"
+                    ],
+                    "popover-heading": [
+                            "Manrope"
+                    ]
+            },
+            "fontSize": {
+                    "body-main": [
+                            "13px",
+                            {
+                                    "lineHeight": "18px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-compact": [
+                            "11px",
+                            {
+                                    "lineHeight": "14px",
+                                    "letterSpacing": "0.03em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "capsule-text": [
+                            "13px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "hint-text": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "popover-heading": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "letterSpacing": "0.01em",
+                                    "fontWeight": "600"
+                            }
+                    ]
+            }
+        },
+        },
+      }
+    </script>
+<style>
+        /* Base styles to ensure consistency */
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
+</head>
+<body class="bg-surface-container-low min-h-screen flex items-center justify-center p-8 relative overflow-hidden">
+<!-- Abstract background to showcase glassmorphism -->
+<div class="absolute inset-0 z-0 opacity-40" style="background-image: radial-gradient(circle at 20% 30%, #e2e2e2 0%, transparent 50%), radial-gradient(circle at 80% 70%, #d3e3dd 0%, transparent 50%);">
+</div>
+<!-- Chat Mockup Context -->
+<div class="relative z-10 w-full max-w-3xl bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant p-6 h-[500px] flex flex-col justify-end">
+<!-- Mock Chat Messages -->
+<div class="flex flex-col gap-4 mb-8 opacity-60">
+<div class="bg-surface-container p-4 rounded-xl rounded-bl-none max-w-[70%] self-start border border-outline-variant/50">
+<p class="font-body-main text-body-main text-on-surface">The client wants to push the deadline back by two weeks. What are your thoughts on this?</p>
+</div>
+</div>
+<!-- Chat Composer Area -->
+<div class="relative border-t border-outline-variant/30 pt-4">
+<div class="bg-surface-container p-4 rounded-xl border border-outline-variant/50 focus-within:border-[#26A69A] transition-colors relative">
+<p class="font-body-main text-body-main text-on-surface min-h-[60px]">
+                    I am agree we should discuss about this later.
+                </p>
+<div class="absolute bottom-4 right-4 flex gap-2">
+<button class="p-2 rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">mood</span>
+</button>
+<button class="p-2 rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">attach_file</span>
+</button>
+<button class="p-2 rounded-full bg-primary-container text-on-primary-container hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[18px] pl-0.5">send</span>
+</button>
+</div>
+</div>
+<!-- Expanding Suggestion Popover (Anchored) -->
+<div class="absolute bottom-[calc(100%+16px)] left-8 w-popover-width bg-white/80 backdrop-blur-[30px] rounded-xl border border-white/40 shadow-[0px_10px_30px_rgba(0,0,0,0.1)] flex flex-col overflow-hidden z-50">
+<!-- Popover Header -->
+<div class="flex items-center justify-between px-padding-standard py-padding-tight border-b border-white/20 bg-white/30">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full inline-block shadow-[0_0_4px_rgba(245,166,35,0.5)]" style="background-color: #F5A623;"></span>
+<span class="font-popover-heading text-popover-heading text-primary">2 Tips</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-label-compact text-label-compact text-secondary opacity-70">Chrome textarea</span>
+<button class="text-secondary hover:text-primary transition-colors flex items-center justify-center rounded-full hover:bg-black/5 p-1 -mr-1">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+</div>
+<!-- Popover Content Canvas -->
+<div class="p-padding-standard flex flex-col gap-padding-loose">
+<!-- Diagnosis -->
+<div>
+<p class="font-body-main text-body-main text-primary">意思清楚，但有两处不自然。</p>
+</div>
+<!-- Issues (The "Tip" Card) -->
+<div class="border-l-[3px] border-[#F5A623] pl-padding-standard flex flex-col gap-padding-standard">
+<!-- Issue 1 -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="font-capsule-text text-capsule-text text-secondary line-through decoration-outline opacity-80">I am agree</span>
+<span class="material-symbols-outlined text-secondary text-[14px]">arrow_right_alt</span>
+<span class="font-capsule-text text-capsule-text text-primary">I agree</span>
+</div>
+<p class="font-hint-text text-hint-text text-secondary">"Agree" is a verb, so "am" is not needed here.</p>
+</div>
+<!-- Issue 2 -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="font-capsule-text text-capsule-text text-secondary line-through decoration-outline opacity-80">discuss about</span>
+<span class="material-symbols-outlined text-secondary text-[14px]">arrow_right_alt</span>
+<span class="font-capsule-text text-capsule-text text-primary">discuss</span>
+</div>
+<p class="font-hint-text text-hint-text text-secondary">"Discuss" already implies talking about something; it takes a direct object.</p>
+</div>
+</div>
+<!-- Rewrite Options -->
+<div class="flex flex-col gap-2">
+<span class="font-label-compact text-label-compact text-secondary uppercase tracking-wider pl-1 mb-1">Rewrite Options</span>
+<!-- Option 1: Casual -->
+<button class="w-full text-left bg-secondary-container/20 hover:bg-secondary-container/40 p-padding-standard rounded-lg border border-transparent hover:border-white/40 transition-all group flex flex-col gap-1">
+<span class="font-label-compact text-label-compact text-on-secondary-container group-hover:text-primary transition-colors">Casual</span>
+<span class="font-body-main text-body-main text-primary">I agree we should talk about this later.</span>
+</button>
+<!-- Option 2: Professional -->
+<button class="w-full text-left bg-secondary-container/20 hover:bg-secondary-container/40 p-padding-standard rounded-lg border border-transparent hover:border-white/40 transition-all group flex flex-col gap-1">
+<span class="font-label-compact text-label-compact text-on-secondary-container group-hover:text-primary transition-colors">Professional</span>
+<span class="font-body-main text-body-main text-primary">I agree that we should discuss this at a later time.</span>
+</button>
+</div>
+</div>
+<!-- Footer (Shared Component) -->
+<div class="bg-white/40 backdrop-blur-[30px] rounded-b-lg border-t border-stone-200/50 flex justify-end gap-3 px-4 py-3 w-full transition-all duration-300 ease-out">
+<button class="flex items-center justify-center p-2 rounded-md hover:bg-stone-100/50 text-[#1A2421]/70 transition-colors" title="Copy">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+<button class="px-3 py-1.5 rounded-md hover:bg-stone-100/50 text-[#1A2421]/70 font-manrope text-xs font-medium uppercase tracking-widest transition-colors">
+                        Ignore
+                    </button>
+<button class="px-4 py-1.5 rounded-md bg-primary-container hover:bg-primary-container/90 text-on-primary-container font-manrope text-xs font-medium uppercase tracking-widest transition-colors shadow-sm">
+                        Apply
+                    </button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

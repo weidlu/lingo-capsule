@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LingoCapsule Floating Assistant Prototype</title>
+    <style>
+      :root {
+        --ink: #17211e;
+        --muted: #5c6863;
+        --line: rgba(74, 84, 80, 0.16);
+        --glass: rgba(250, 252, 250, 0.82);
+        --glass-strong: rgba(255, 255, 255, 0.9);
+        --amber: #f4bd3f;
+        --amber-soft: rgba(248, 192, 58, 0.16);
+        --green: #007a70;
+        --green-soft: rgba(0, 148, 136, 0.12);
+        --shadow: 0 18px 52px rgba(32, 38, 35, 0.18);
+        font-family:
+          Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+          "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--ink);
+        background:
+          linear-gradient(120deg, rgba(223, 232, 230, 0.94), rgba(244, 240, 232, 0.86)),
+          #dfe7e4;
+      }
+
+      .stage {
+        position: relative;
+        width: 100vw;
+        min-height: 100vh;
+        overflow: hidden;
+      }
+
+      .app-context {
+        position: absolute;
+        inset: 56px 74px 94px;
+        border: 1px solid rgba(255, 255, 255, 0.62);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.34);
+        box-shadow: 0 24px 80px rgba(64, 72, 70, 0.1);
+        filter: blur(0.2px);
+      }
+
+      .traffic {
+        position: absolute;
+        top: 24px;
+        left: 28px;
+        display: flex;
+        gap: 8px;
+      }
+
+      .traffic span {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(92, 104, 99, 0.24);
+      }
+
+      .document-lines {
+        position: absolute;
+        top: 88px;
+        left: 96px;
+        right: 96px;
+        display: grid;
+        gap: 18px;
+        opacity: 0.34;
+      }
+
+      .document-lines span {
+        display: block;
+        height: 12px;
+        border-radius: 999px;
+        background: rgba(92, 104, 99, 0.22);
+      }
+
+      .document-lines span:nth-child(1) {
+        width: 42%;
+        height: 18px;
+      }
+
+      .document-lines span:nth-child(2) {
+        width: 74%;
+      }
+
+      .document-lines span:nth-child(3) {
+        width: 68%;
+      }
+
+      .document-lines span:nth-child(4) {
+        width: 56%;
+      }
+
+      .composer {
+        position: absolute;
+        left: 50%;
+        bottom: 78px;
+        display: grid;
+        grid-template-columns: 38px 1px 1fr 34px;
+        align-items: center;
+        gap: 16px;
+        width: min(860px, calc(100vw - 96px));
+        min-height: 68px;
+        padding: 0 22px;
+        transform: translateX(-50%);
+        border: 1px solid rgba(255, 255, 255, 0.74);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.76);
+        box-shadow: 0 14px 44px rgba(48, 58, 54, 0.15);
+        backdrop-filter: blur(22px);
+      }
+
+      .mark {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        border: 1px solid rgba(24, 33, 30, 0.18);
+        position: relative;
+      }
+
+      .mark::before,
+      .mark::after {
+        content: "";
+        position: absolute;
+        left: 8px;
+        right: 8px;
+        height: 2px;
+        border-radius: 999px;
+        background: rgba(24, 33, 30, 0.62);
+      }
+
+      .mark::before {
+        top: 10px;
+      }
+
+      .mark::after {
+        top: 17px;
+      }
+
+      .divider {
+        height: 30px;
+        background: var(--line);
+      }
+
+      .typed {
+        font-size: 18px;
+        line-height: 1.2;
+        white-space: nowrap;
+        color: #1d2825;
+      }
+
+      .cursor {
+        display: inline-block;
+        width: 2px;
+        height: 26px;
+        margin-left: 2px;
+        vertical-align: -6px;
+        background: #56b8ad;
+      }
+
+      .more {
+        display: flex;
+        justify-content: center;
+        gap: 4px;
+      }
+
+      .more span {
+        width: 5px;
+        height: 18px;
+        border-radius: 999px;
+        background: rgba(92, 104, 99, 0.44);
+      }
+
+      .popover {
+        position: absolute;
+        left: 50%;
+        bottom: 174px;
+        width: 448px;
+        transform: translateX(-50%);
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.82);
+        border-radius: 8px;
+        background: var(--glass);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(28px) saturate(1.08);
+      }
+
+      .popover::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: -7px;
+        width: 14px;
+        height: 14px;
+        transform: translateX(-50%) rotate(45deg);
+        border-right: 1px solid rgba(255, 255, 255, 0.72);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.72);
+        background: rgba(247, 249, 247, 0.78);
+      }
+
+      .header,
+      .footer {
+        display: flex;
+        align-items: center;
+        min-height: 54px;
+        padding: 0 18px;
+      }
+
+      .header {
+        gap: 12px;
+        border-bottom: 1px solid rgba(74, 84, 80, 0.08);
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--amber);
+      }
+
+      .title {
+        font-size: 18px;
+        font-weight: 720;
+        letter-spacing: 0;
+      }
+
+      .app-chip {
+        padding: 5px 10px;
+        border-radius: 7px;
+        background: rgba(24, 33, 30, 0.06);
+        color: #46504c;
+        font-size: 14px;
+        font-weight: 680;
+        letter-spacing: 0.03em;
+      }
+
+      .close {
+        margin-left: auto;
+        width: 32px;
+        height: 32px;
+        border: 0;
+        border-radius: 8px;
+        background: transparent;
+        color: #4c5651;
+        font-size: 24px;
+        line-height: 1;
+      }
+
+      .content {
+        padding: 18px 20px 16px;
+      }
+
+      .diagnosis {
+        margin: 0 0 16px;
+        font-size: 16px;
+        font-weight: 720;
+        line-height: 1.45;
+      }
+
+      .suggestions {
+        display: grid;
+        gap: 14px;
+      }
+
+      .suggestion {
+        padding-left: 14px;
+        border-left: 4px solid rgba(244, 189, 63, 0.82);
+      }
+
+      .change {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 34px;
+        margin-bottom: 7px;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        min-height: 32px;
+        max-width: 180px;
+        padding: 4px 12px;
+        border-radius: 7px;
+        font-size: 15px;
+        font-weight: 680;
+        line-height: 1.15;
+        white-space: nowrap;
+      }
+
+      .before {
+        border: 1px solid rgba(244, 189, 63, 0.32);
+        background: var(--amber-soft);
+        color: #7a6240;
+      }
+
+      .after {
+        border: 1px solid rgba(0, 148, 136, 0.16);
+        background: var(--green-soft);
+        color: var(--green);
+      }
+
+      .arrow {
+        color: rgba(74, 84, 80, 0.72);
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .note {
+        margin: 0;
+        color: #3f4945;
+        font-size: 15px;
+        line-height: 1.45;
+      }
+
+      .rule {
+        height: 1px;
+        margin: 17px 0 14px;
+        background: rgba(74, 84, 80, 0.12);
+      }
+
+      .rewrite-label {
+        margin: 0 0 7px;
+        color: #4a5550;
+        font-size: 13px;
+        font-weight: 760;
+        letter-spacing: 0.04em;
+      }
+
+      .rewrite {
+        margin: 0;
+        font-size: 17px;
+        line-height: 1.4;
+        color: #17211e;
+      }
+
+      .footer {
+        justify-content: space-between;
+        border-top: 1px solid rgba(74, 84, 80, 0.08);
+        background: rgba(255, 255, 255, 0.38);
+      }
+
+      .footer-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      button {
+        font: inherit;
+        cursor: default;
+      }
+
+      .ghost,
+      .copy,
+      .apply {
+        min-height: 36px;
+        border-radius: 8px;
+      }
+
+      .ghost {
+        border: 0;
+        background: transparent;
+        color: #5d6863;
+        font-size: 15px;
+        font-weight: 650;
+      }
+
+      .copy {
+        width: 38px;
+        border: 0;
+        background: transparent;
+        color: #4f5a55;
+        position: relative;
+      }
+
+      .copy::before,
+      .copy::after {
+        content: "";
+        position: absolute;
+        width: 13px;
+        height: 17px;
+        border: 2px solid currentColor;
+        border-radius: 3px;
+      }
+
+      .copy::before {
+        top: 10px;
+        left: 10px;
+        opacity: 0.5;
+      }
+
+      .copy::after {
+        top: 7px;
+        left: 15px;
+        background: rgba(255, 255, 255, 0.4);
+      }
+
+      .apply {
+        min-width: 72px;
+        border: 0;
+        background: #081210;
+        color: white;
+        font-size: 15px;
+        font-weight: 760;
+      }
+
+      @media (max-width: 640px) {
+        .app-context {
+          inset: 20px 18px 92px;
+        }
+
+        .popover {
+          width: min(448px, calc(100vw - 32px));
+        }
+
+        .composer {
+          width: calc(100vw - 32px);
+          gap: 12px;
+          padding-inline: 16px;
+        }
+
+        .typed {
+          overflow: hidden;
+          font-size: 15px;
+          text-overflow: ellipsis;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="stage" aria-label="LingoCapsule floating assistant prototype">
+      <section class="app-context" aria-hidden="true">
+        <div class="traffic"><span></span><span></span><span></span></div>
+        <div class="document-lines">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </section>
+
+      <article class="popover" aria-label="LingoCapsule suggestion popover">
+        <header class="header">
+          <span class="dot"></span>
+          <span class="title">2 nudges</span>
+          <span class="app-chip">Chrome</span>
+          <button class="close" aria-label="Close">x</button>
+        </header>
+
+        <div class="content">
+          <p class="diagnosis">意思清楚，改两处会更自然。</p>
+
+          <div class="suggestions">
+            <section class="suggestion" aria-label="agree suggestion">
+              <div class="change">
+                <span class="chip before">I am agree</span>
+                <span class="arrow">-&gt;</span>
+                <span class="chip after">I agree</span>
+              </div>
+              <p class="note">agree 本身是动词，不需要 am。</p>
+            </section>
+
+            <section class="suggestion" aria-label="discuss suggestion">
+              <div class="change">
+                <span class="chip before">discuss about</span>
+                <span class="arrow">-&gt;</span>
+                <span class="chip after">discuss</span>
+              </div>
+              <p class="note">discuss 通常直接接对象。</p>
+            </section>
+          </div>
+
+          <div class="rule"></div>
+
+          <p class="rewrite-label">建议表达</p>
+          <p class="rewrite">I agree we should discuss this later.</p>
+        </div>
+
+        <footer class="footer">
+          <button class="ghost">Ignore</button>
+          <div class="footer-actions">
+            <button class="copy" aria-label="Copy suggestion"></button>
+            <button class="apply">Apply</button>
+          </div>
+        </footer>
+      </article>
+
+      <section class="composer" aria-label="Host app input field">
+        <div class="mark" aria-hidden="true"></div>
+        <div class="divider" aria-hidden="true"></div>
+        <div class="typed">I am agree we should discuss about this later.<span class="cursor"></span></div>
+        <div class="more" aria-hidden="true"><span></span><span></span><span></span></div>
+      </section>
+    </main>
+  </body>
+</html>

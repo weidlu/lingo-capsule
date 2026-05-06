@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LingoCapsule - Writing Assistant</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "surface-variant": "#e2e2e2",
+                      "error": "#ba1a1a",
+                      "surface-container-high": "#e8e8e8",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-fixed-variant": "#3b4a45",
+                      "surface-dim": "#dadada",
+                      "primary-fixed-dim": "#bec9c4",
+                      "on-tertiary-fixed": "#00201d",
+                      "primary-fixed": "#dae5e0",
+                      "on-tertiary-container": "#079a8e",
+                      "secondary-fixed": "#d6e6e0",
+                      "inverse-on-surface": "#f1f1f1",
+                      "tertiary": "#000e0c",
+                      "surface-container": "#eeeeee",
+                      "on-surface": "#1a1c1c",
+                      "on-secondary-fixed": "#101e1a",
+                      "on-surface-variant": "#434846",
+                      "on-tertiary-fixed-variant": "#005049",
+                      "inverse-primary": "#bec9c4",
+                      "on-primary-container": "#818c87",
+                      "secondary-fixed-dim": "#bacac4",
+                      "error-container": "#ffdad6",
+                      "secondary-container": "#d3e3dd",
+                      "surface-bright": "#f9f9f9",
+                      "tertiary-fixed": "#84f5e8",
+                      "secondary": "#53625d",
+                      "tertiary-fixed-dim": "#66d9cc",
+                      "on-primary-fixed-variant": "#3e4945",
+                      "on-primary-fixed": "#141e1b",
+                      "background": "#f9f9f9",
+                      "tertiary-container": "#002723",
+                      "surface-container-low": "#f3f3f3",
+                      "outline": "#737876",
+                      "surface": "#f9f9f9",
+                      "outline-variant": "#c3c8c5",
+                      "surface-tint": "#56615d",
+                      "inverse-surface": "#2f3131",
+                      "on-background": "#1a1c1c",
+                      "on-secondary-container": "#576661",
+                      "surface-container-highest": "#e2e2e2",
+                      "on-secondary": "#ffffff",
+                      "primary": "#050d0b",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-container": "#1a2421"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "padding-tight": "8px",
+                      "capsule-height": "44px",
+                      "padding-loose": "16px",
+                      "gutter": "12px",
+                      "padding-standard": "12px",
+                      "unit": "4px",
+                      "popover-width": "360px",
+                      "capsule-width-range": "180px-240px"
+              },
+              "fontFamily": {
+                      "capsule-text": [
+                              "Inter"
+                      ],
+                      "popover-heading": [
+                              "Manrope"
+                      ],
+                      "hint-text": [
+                              "Inter"
+                      ],
+                      "label-compact": [
+                              "Inter"
+                      ],
+                      "body-main": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "capsule-text": [
+                              "13px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "popover-heading": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "hint-text": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-compact": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.03em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-main": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+</head>
+<body class="bg-surface-variant min-h-screen flex items-center justify-center p-8 relative overflow-hidden" data-alt="A softly blurred, abstract macOS desktop background in light mode. The scene features gentle, sweeping curves and gradients in pastel tones of pale blue, soft grey, and muted lavender. The lighting is bright and diffused, creating a calm, minimalist atmosphere. The overall composition is clean, modern, and uncluttered, perfect for emphasizing a floating application UI." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDQUfcSvV5QnodgPBiRfYi1tI6hEO0Pxagq4aqa8Gzp_xl5jho4-bAz56dIzIAnxZ7MKggSx5ypHR_iOq6Tf1Sdhynl9h110oCKXzmqJ89RmY3-pYqbfeBvYp0JnNZzsHHK4r0bM5VmHU9TbpQe4V2jLdz5pmBn4jEui0S5NSg5mxBei4VftCsQNRL4AtwBeeYxngVaKibRsg3iWF5A5T4Qu5tLv9zxEHP75sm7aR2QBr3YG4_nJ_MtgjA_nHKUcx15e8JPZ-WFZBIf'); background-size: cover; background-position: center;">
+<!-- Background Blur Overlay for the desktop feel -->
+<div class="absolute inset-0 bg-white/40 backdrop-blur-3xl z-0"></div>
+<!-- Top Navigation (Shared Component) - Rendered as requested, but structurally suppressed in relevance check? No, user asked to follow predicted components. -->
+<nav class="fixed top-4 left-1/2 -translate-x-1/2 flex items-center px-4 py-2 z-50 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md rounded-full border border-white/30 dark:border-white/10 mx-auto w-fit shadow-[0px_10px_30px_rgba(0,0,0,0.1)] divide-x divide-white/20 font-manrope text-sm font-medium tracking-tight">
+<div class="px-4 flex items-center gap-2 text-sm font-bold text-[#1A2421] dark:text-white">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">edit_document</span>
+            Writing Assistant
+        </div>
+<div class="px-4 flex items-center gap-6">
+<button class="text-[#26A69A] font-semibold hover:bg-white/20 dark:hover:bg-white/5 transition-colors px-2 py-1 rounded-md">Status</button>
+<button class="text-slate-500 dark:text-slate-400 hover:bg-white/20 dark:hover:bg-white/5 transition-colors px-2 py-1 rounded-md">Source</button>
+</div>
+<div class="px-4 flex items-center">
+<button class="text-slate-500 hover:bg-white/20 transition-colors p-1 rounded-full">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</nav>
+<!-- Main Application Canvas -->
+<div class="relative z-10 flex flex-col items-center justify-end w-full max-w-4xl h-[600px] pb-12">
+<!-- The Floating Popover (Level 2 Elevation) -->
+<div class="w-[440px] bg-white/80 backdrop-blur-[30px] border border-white/40 rounded-xl shadow-[0px_10px_30px_rgba(0,0,0,0.1)] mb-4 flex flex-col overflow-hidden">
+<!-- Header -->
+<div class="flex items-center justify-between px-padding-loose py-padding-tight border-b border-white/20">
+<div class="flex items-center gap-gutter">
+<div class="w-2 h-2 rounded-full bg-amber-500"></div>
+<span class="font-popover-heading text-popover-heading text-on-surface">2 nudges</span>
+<div class="bg-surface-variant/50 px-2 py-1 rounded text-label-compact font-label-compact text-on-surface-variant">Chrome</div>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<!-- Content Area -->
+<div class="p-padding-loose flex flex-col gap-padding-loose">
+<!-- Diagnosis -->
+<p class="font-body-main text-body-main text-on-surface">
+                    意思清楚，改两处会更自然。
+                </p>
+<!-- Suggestions Group -->
+<div class="flex flex-col gap-gutter">
+<!-- Suggestion Row 1 -->
+<div class="flex flex-col gap-unit border-l-[3px] border-amber-300/50 pl-gutter py-1">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="bg-amber-50 text-amber-900 px-2 py-1 rounded-md font-capsule-text text-capsule-text line-through opacity-60">I am agree</span>
+<span class="material-symbols-outlined text-[16px] text-outline">arrow_right_alt</span>
+<button class="bg-emerald-50 text-[#079a8e] px-2 py-1 rounded-md font-capsule-text text-capsule-text hover:bg-emerald-100 transition-colors cursor-pointer border border-emerald-100/50">I agree</button>
+</div>
+<p class="font-hint-text text-hint-text text-on-surface-variant">agree 本身是动词，不需要 am。</p>
+</div>
+<!-- Suggestion Row 2 -->
+<div class="flex flex-col gap-unit border-l-[3px] border-amber-300/50 pl-gutter py-1">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="bg-amber-50 text-amber-900 px-2 py-1 rounded-md font-capsule-text text-capsule-text line-through opacity-60">discuss about</span>
+<span class="material-symbols-outlined text-[16px] text-outline">arrow_right_alt</span>
+<button class="bg-emerald-50 text-[#079a8e] px-2 py-1 rounded-md font-capsule-text text-capsule-text hover:bg-emerald-100 transition-colors cursor-pointer border border-emerald-100/50">discuss</button>
+</div>
+<p class="font-hint-text text-hint-text text-on-surface-variant">discuss 通常直接接对象。</p>
+</div>
+</div>
+<!-- Divider -->
+<div class="h-[1px] w-full bg-outline-variant/30"></div>
+<!-- Rewrite Section -->
+<div class="flex flex-col gap-unit">
+<span class="font-label-compact text-label-compact text-on-surface-variant uppercase tracking-wider">建议表达</span>
+<p class="font-body-main text-body-main text-on-surface bg-surface-variant/30 p-padding-standard rounded-lg border border-white/40">
+                        I agree we should discuss this later.
+                    </p>
+</div>
+</div>
+<!-- Footer (Shared Component Translated) -->
+<div class="flex justify-between items-center px-6 py-3 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg rounded-b-xl border-t border-white/20">
+<button class="font-manrope text-xs uppercase tracking-widest font-bold text-slate-400 hover:text-[#26A69A] transition-opacity scale-100 hover:scale-105">
+                    Ignore
+                </button>
+<div class="flex items-center gap-4">
+<button class="text-slate-400 hover:text-[#26A69A] transition-colors p-2 rounded-full hover:bg-surface-variant/50">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+<button class="font-manrope text-xs uppercase tracking-widest font-bold text-[#1A2421] dark:text-slate-100 bg-[#26A69A]/20 hover:bg-[#26A69A]/30 px-4 py-2 rounded-lg transition-all scale-100 hover:scale-105 text-[#005049]">
+                        Apply
+                    </button>
+</div>
+</div>
+</div>
+<!-- The Input Field (Level 1 Elevation - The Capsule) -->
+<div class="w-[600px] h-[52px] bg-white/70 backdrop-blur-[20px] border border-white/30 rounded-full shadow-[0px_4px_12px_rgba(0,0,0,0.05)] flex items-center px-6 gap-4 relative">
+<span class="material-symbols-outlined text-outline">edit_note</span>
+<div class="w-[1px] h-6 bg-outline-variant/50"></div>
+<div class="flex-1 flex items-center">
+<span class="font-body-main text-body-main text-on-surface">I am agree we should discuss about this later.</span>
+<div class="w-[2px] h-5 bg-[#26A69A] ml-[1px] animate-pulse"></div>
+</div>
+<!-- Mini-graph hint -->
+<div class="flex items-center gap-1 opacity-50">
+<div class="w-1 h-2 bg-secondary rounded-full"></div>
+<div class="w-1 h-3 bg-secondary rounded-full"></div>
+<div class="w-1 h-1.5 bg-secondary rounded-full"></div>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ambient Writing Context - LingoCapsule</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+  }
+</style>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "on-surface-variant": "#434846",
+                "on-secondary-container": "#576661",
+                "surface-container": "#eeeeee",
+                "surface-container-lowest": "#ffffff",
+                "on-error-container": "#93000a",
+                "on-tertiary-fixed-variant": "#005049",
+                "surface-variant": "#e2e2e2",
+                "on-secondary-fixed": "#101e1a",
+                "surface-container-highest": "#e2e2e2",
+                "surface-container-low": "#f3f3f3",
+                "background": "#f9f9f9",
+                "tertiary": "#000e0c",
+                "on-primary": "#ffffff",
+                "inverse-surface": "#2f3131",
+                "primary": "#050d0b",
+                "error-container": "#ffdad6",
+                "on-tertiary": "#ffffff",
+                "on-surface": "#1a1c1c",
+                "primary-fixed": "#dae5e0",
+                "outline": "#737876",
+                "on-error": "#ffffff",
+                "tertiary-fixed-dim": "#66d9cc",
+                "tertiary-container": "#002723",
+                "inverse-on-surface": "#f1f1f1",
+                "surface-bright": "#f9f9f9",
+                "secondary": "#53625d",
+                "surface-dim": "#dadada",
+                "secondary-container": "#d3e3dd",
+                "primary-fixed-dim": "#bec9c4",
+                "primary-container": "#1a2421",
+                "on-primary-fixed": "#141e1b",
+                "secondary-fixed": "#d6e6e0",
+                "on-background": "#1a1c1c",
+                "on-secondary-fixed-variant": "#3b4a45",
+                "surface-container-high": "#e8e8e8",
+                "error": "#ba1a1a",
+                "on-tertiary-fixed": "#00201d",
+                "outline-variant": "#c3c8c5",
+                "tertiary-fixed": "#84f5e8",
+                "on-primary-fixed-variant": "#3e4945",
+                "secondary-fixed-dim": "#bacac4",
+                "surface": "#f9f9f9",
+                "on-secondary": "#ffffff",
+                "inverse-primary": "#bec9c4",
+                "surface-tint": "#56615d",
+                "on-primary-container": "#818c87",
+                "on-tertiary-container": "#079a8e",
+                "warm-amber": "#F59E0B"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "unit": "4px",
+                "padding-tight": "8px",
+                "capsule-height": "44px",
+                "popover-width": "360px",
+                "capsule-width-range": "180px-240px",
+                "gutter": "12px",
+                "padding-standard": "12px",
+                "padding-loose": "16px"
+        },
+        "fontFamily": {
+                "capsule-text": [
+                        "Inter"
+                ],
+                "popover-heading": [
+                        "Manrope"
+                ],
+                "label-compact": [
+                        "Inter"
+                ],
+                "body-main": [
+                        "Inter"
+                ],
+                "hint-text": [
+                        "Inter"
+                ]
+        },
+        "fontSize": {
+                "capsule-text": [
+                        "13px",
+                        {
+                                "lineHeight": "16px",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "popover-heading": [
+                        "14px",
+                        {
+                                "lineHeight": "20px",
+                                "letterSpacing": "0.01em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "label-compact": [
+                        "11px",
+                        {
+                                "lineHeight": "14px",
+                                "letterSpacing": "0.03em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-main": [
+                        "13px",
+                        {
+                                "lineHeight": "18px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "hint-text": [
+                        "12px",
+                        {
+                                "lineHeight": "16px",
+                                "fontWeight": "400"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+</head>
+<body class="bg-background min-h-screen flex items-center justify-center p-8 font-body-main text-on-background">
+<!-- Desktop Environment Wrapper -->
+<div class="relative w-full max-w-4xl h-[600px] bg-cover bg-center rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center" data-alt="A clean, abstract minimalist wallpaper background showing soft, diffused light gradient across a light gray and white surface. The image evokes a calm, pristine digital workspace typical of a high-end macOS desktop environment. Subtle variations in tone create a sense of depth without being distracting. The aesthetic is serene, professional, and entirely uncluttered." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCOFxhRuzl1jEOff4bDLbTKGr0dCmGKVmxrjF6RDWMgbN4BtocnXXBRrWksGdChCrQJiSJH0kwrNEJ8Q9ZRKZPMrpHBGa2Xq-NuqAhr19I-XjpjaKHYgKl974KzxliBUTS0iEi8yLbfrz-6TvDgjU-laFxVPZiHe60KSDL2nLx2Ju8czrNq80S9wNqMFG4mrNauiWcRi0vQM88ulNcfjGkKgjiA5XZigLG_B5xrTA5ucbnsOGMgGHO4V-7Kp23KHhgfXUVFxT0XviIE');">
+<!-- App Window (Simulated Work Chat) -->
+<div class="w-[800px] h-[500px] bg-surface-container-lowest/90 backdrop-blur-xl rounded-xl shadow-2xl border border-surface-variant flex flex-col overflow-hidden relative">
+<!-- Window Chrome -->
+<div class="h-12 bg-surface-container-low/50 backdrop-blur-md border-b border-surface-variant flex items-center px-4 shrink-0">
+<div class="flex gap-2">
+<div class="w-3 h-3 rounded-full bg-[#FF5F56] border border-[#E0443E]"></div>
+<div class="w-3 h-3 rounded-full bg-[#FFBD2E] border border-[#DEA123]"></div>
+<div class="w-3 h-3 rounded-full bg-[#27C93F] border border-[#1AAB29]"></div>
+</div>
+<div class="flex-1 text-center font-popover-heading text-popover-heading text-on-surface-variant">
+          Project Alpha - Design Sync
+        </div>
+<div class="w-12"></div> <!-- Spacer for balance -->
+</div>
+<!-- Chat Content (Subdued) -->
+<div class="flex-1 p-6 flex flex-col gap-4 overflow-y-auto bg-surface-bright">
+<div class="flex gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center shrink-0">
+<span class="font-capsule-text text-capsule-text text-on-secondary-container">AL</span>
+</div>
+<div class="bg-surface-container-low p-3 rounded-lg rounded-tl-none max-w-md">
+<p class="font-body-main text-body-main text-on-surface">The initial drafts are looking solid. I think we need to align on the final color palette before moving to dev.</p>
+</div>
+</div>
+<div class="flex gap-3 self-end flex-row-reverse">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center shrink-0">
+<span class="font-capsule-text text-capsule-text text-on-primary-container">ME</span>
+</div>
+<div class="bg-primary/5 p-3 rounded-lg rounded-tr-none max-w-md">
+<p class="font-body-main text-body-main text-on-surface">Agreed. I'll prep a final review doc for tomorrow's meeting.</p>
+</div>
+</div>
+</div>
+<!-- Composer Area -->
+<div class="p-4 border-t border-surface-variant bg-surface-container-lowest relative">
+<div class="flex items-end gap-3 bg-surface-bright border border-surface-variant rounded-lg p-3 shadow-sm focus-within:ring-1 focus-within:ring-outline/30 transition-shadow">
+<div class="flex-1 relative">
+<!-- Simulated Input -->
+<div class="font-body-main text-body-main text-on-surface outline-none min-h-[24px] cursor-text">
+              I am agree we should discuss about this later.<span class="animate-pulse inline-block w-[1px] h-[1em] bg-primary align-middle ml-[1px]"></span>
+</div>
+<!-- Highlighted Error (Subtle grammar highlight) -->
+<div aria-hidden="true" class="absolute inset-0 pointer-events-none">
+<span class="text-transparent">I </span><span class="border-b-[1.5px] border-warm-amber border-dotted text-transparent">am agree</span><span class="text-transparent"> we should discuss </span><span class="border-b-[1.5px] border-warm-amber border-dotted text-transparent">about this</span><span class="text-transparent"> later.</span>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors shrink-0">
+<span class="material-symbols-outlined text-[20px]">send</span>
+</button>
+</div>
+<!-- The LingoCapsule Pill (Floating) -->
+<div class="absolute -top-12 right-6 h-capsule-height w-[190px] bg-surface-container-lowest/80 backdrop-blur-[20px] rounded-full border border-surface-container-highest/50 shadow-[0_4px_12px_rgba(0,0,0,0.05),0_1px_3px_rgba(0,0,0,0.02)] flex items-center px-padding-tight cursor-default group hover:bg-surface-container-lowest/90 transition-all duration-200">
+<!-- Icon / Brand Mark -->
+<div class="w-7 h-7 rounded-full bg-surface-container-low flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[16px] text-on-surface">magic_button</span>
+</div>
+<!-- Divider -->
+<div class="w-px h-5 bg-outline-variant/50 mx-2"></div>
+<!-- Status Text -->
+<div class="flex flex-col justify-center flex-1 min-w-0">
+<div class="flex items-center gap-1.5">
+<div class="w-1.5 h-1.5 rounded-full bg-warm-amber shrink-0 shadow-[0_0_4px_rgba(245,158,11,0.4)]"></div>
+<span class="font-capsule-text text-capsule-text text-on-surface truncate">2 Tips</span>
+</div>
+<span class="font-hint-text text-[10px] text-on-surface-variant/80 truncate leading-tight">Meaning clear</span>
+</div>
+<!-- Subtle hover action hint -->
+<div class="opacity-0 group-hover:opacity-100 transition-opacity ml-1">
+<span class="material-symbols-outlined text-[14px] text-outline">unfold_more</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

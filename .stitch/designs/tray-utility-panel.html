@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LingoCapsule - Tray Utility</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#bec9c4",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#005049",
+                    "on-background": "#1a1c1c",
+                    "error-container": "#ffdad6",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed": "#101e1a",
+                    "secondary-container": "#d3e3dd",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed-dim": "#66d9cc",
+                    "primary-fixed": "#dae5e0",
+                    "on-primary-container": "#818c87",
+                    "surface": "#f9f9f9",
+                    "inverse-surface": "#2f3131",
+                    "tertiary-container": "#002723",
+                    "on-primary": "#ffffff",
+                    "outline-variant": "#c3c8c5",
+                    "background": "#f9f9f9",
+                    "surface-tint": "#56615d",
+                    "inverse-primary": "#bec9c4",
+                    "surface-dim": "#dadada",
+                    "tertiary": "#000e0c",
+                    "on-secondary-fixed-variant": "#3b4a45",
+                    "primary-container": "#1a2421",
+                    "on-surface": "#1a1c1c",
+                    "on-tertiary": "#ffffff",
+                    "inverse-on-surface": "#f1f1f1",
+                    "tertiary-fixed": "#84f5e8",
+                    "on-tertiary-fixed": "#00201d",
+                    "primary": "#050d0b",
+                    "surface-container-highest": "#e2e2e2",
+                    "on-tertiary-container": "#079a8e",
+                    "on-surface-variant": "#434846",
+                    "secondary-fixed-dim": "#bacac4",
+                    "on-error-container": "#93000a",
+                    "surface-variant": "#e2e2e2",
+                    "on-secondary-container": "#576661",
+                    "outline": "#737876",
+                    "surface-container-low": "#f3f3f3",
+                    "surface-container-high": "#e8e8e8",
+                    "surface-container": "#eeeeee",
+                    "secondary": "#53625d",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed-variant": "#3e4945",
+                    "on-primary-fixed": "#141e1b",
+                    "surface-bright": "#f9f9f9",
+                    "secondary-fixed": "#d6e6e0"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "capsule-height": "44px",
+                    "padding-standard": "12px",
+                    "popover-width": "360px",
+                    "padding-loose": "16px",
+                    "padding-tight": "8px",
+                    "gutter": "12px",
+                    "capsule-width-range": "180px-240px"
+            },
+            "fontFamily": {
+                    "hint-text": [
+                            "Inter"
+                    ],
+                    "body-main": [
+                            "Inter"
+                    ],
+                    "popover-heading": [
+                            "Manrope"
+                    ],
+                    "label-compact": [
+                            "Inter"
+                    ],
+                    "capsule-text": [
+                            "Inter"
+                    ]
+            },
+            "fontSize": {
+                    "hint-text": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "body-main": [
+                            "13px",
+                            {
+                                    "lineHeight": "18px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "popover-heading": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "letterSpacing": "0.01em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "label-compact": [
+                            "11px",
+                            {
+                                    "lineHeight": "14px",
+                                    "letterSpacing": "0.03em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "capsule-text": [
+                            "13px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "500"
+                            }
+                    ]
+            }
+          }
+        }
+      }
+    </script>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+body {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuB7luXy-V7wKFryhL8wbfz2aIzx7Z_8cRPlG2nCtjD1N_9Jc2IaZsy1ad8DFfuBoLc9P5jmKs-GqntMjlPFml_92OPqkftI0y5GL96Vvdh8VXikqef2DF6_wkuMnaLc1MC2fkmT8uARyFePql-hokhkf3MgarqB6c3d9aIurb68n1fiSwhx2nF5uixbpq5dX6y2mM8oQ7s8cy1EzI3zDgWWZ9VIfUayy2CiVIV8VMXsnUSqYe3ZitE3SlC0LCrF9LUYr_-MG3W6Zucx);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh
+    }
+.macos-panel {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px)
+    }
+/* Custom Scrollbar for inner content */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px
+    }
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent
+    }
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px
+    }
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2)
+    }</style>
+</head>
+<body class="antialiased flex items-start justify-end p-8 font-body-main text-body-main text-on-surface">
+<!-- Tray Panel Container -->
+<main class="macos-panel bg-white/70 w-[420px] h-[560px] rounded-xl flex flex-col overflow-hidden relative">
+<!-- TopAppBar (From JSON, modified for context) -->
+<header class="bg-white/60 dark:bg-[#1A2421]/60 backdrop-blur-[20px] rounded-t-lg border-b border-white/30 dark:border-white/10 flex justify-between items-center px-4 py-2 w-full shrink-0 z-10">
+<!-- Brand & Status -->
+<div class="flex items-center gap-2">
+<span class="font-manrope text-base font-bold text-emerald-950 dark:text-emerald-50 tracking-tight">LingoCapsule</span>
+<span class="flex items-center gap-1.5 ml-2 font-hint-text text-hint-text text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
+                    Running
+                </span>
+</div>
+<!-- Actions -->
+<div class="flex items-center gap-2 text-emerald-950/50 dark:text-emerald-50/40">
+<button aria-label="Sync" class="hover:bg-white/20 dark:hover:bg-black/10 transition-colors rounded p-1">
+<span class="material-symbols-outlined text-[18px]">sync</span>
+</button>
+<button aria-label="Account" class="hover:bg-white/20 dark:hover:bg-black/10 transition-colors rounded p-1">
+<span class="material-symbols-outlined text-[18px]">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Segmented Control (Navigation within Panel) -->
+<div class="px-padding-loose py-padding-tight border-b border-outline-variant/30 bg-white/40 shrink-0">
+<div class="flex p-1 bg-surface-container-highest/50 rounded-lg">
+<button class="flex-1 py-1 px-3 text-center rounded-md bg-white shadow-sm font-capsule-text text-capsule-text text-on-surface ring-1 ring-black/5">Review</button>
+<button class="flex-1 py-1 px-3 text-center rounded-md font-capsule-text text-capsule-text text-on-surface-variant hover:text-on-surface transition-colors">Settings</button>
+</div>
+</div>
+<!-- Scrollable Content Area -->
+<div class="flex-1 overflow-y-auto custom-scrollbar bg-transparent">
+<!-- REVIEW TAB CONTENT -->
+<div class="p-padding-loose flex flex-col gap-padding-loose">
+<!-- Today's Summary Section -->
+<section>
+<h2 class="font-popover-heading text-popover-heading text-on-surface mb-padding-tight">Today</h2>
+<div class="bg-white/50 rounded-lg border border-outline-variant/30 p-padding-standard flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed/20 flex items-center justify-center text-tertiary-container">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div>
+<div class="font-capsule-text text-capsule-text text-on-surface">12 checked, 7 accepted</div>
+<div class="font-hint-text text-hint-text text-on-surface-variant flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+                                    Common pattern: "verb pairing"
+                                </div>
+</div>
+</div>
+</div>
+</section>
+<!-- Recent Patterns Section -->
+<section>
+<div class="flex justify-between items-end mb-padding-tight">
+<h2 class="font-popover-heading text-popover-heading text-on-surface">Recent Patterns</h2>
+<button class="font-label-compact text-label-compact text-primary opacity-70 hover:opacity-100 transition-opacity">Clear</button>
+</div>
+<div class="bg-white/50 rounded-lg border border-outline-variant/30 flex flex-col">
+<!-- Pattern Item 1 -->
+<div class="p-padding-standard border-b border-outline-variant/30 last:border-0 hover:bg-white/60 transition-colors cursor-default relative">
+<div class="absolute left-0 top-0 bottom-0 w-[3px] bg-amber-400 rounded-l-lg opacity-80"></div>
+<div class="flex flex-col gap-2 pl-2">
+<div class="flex items-start justify-between gap-4">
+<div class="flex-1">
+<span class="bg-error-container/50 text-on-error-container px-1.5 py-0.5 rounded font-mono text-[11px] line-through">I am agree</span>
+<span class="material-symbols-outlined text-[14px] text-outline mx-1 align-middle">arrow_forward</span>
+<span class="bg-secondary-fixed/50 text-on-secondary-fixed px-1.5 py-0.5 rounded font-mono text-[11px] font-medium">I agree</span>
+</div>
+<button class="opacity-0 group-hover:opacity-100 text-outline hover:text-on-surface transition-opacity p-0.5">
+<span class="material-symbols-outlined text-[16px]">more_horiz</span>
+</button>
+</div>
+<p class="font-hint-text text-hint-text text-on-surface-variant">"Agree" is a verb, doesn't need "to be".</p>
+</div>
+</div>
+<!-- Pattern Item 2 -->
+<div class="p-padding-standard border-b border-outline-variant/30 last:border-0 hover:bg-white/60 transition-colors cursor-default relative group">
+<div class="absolute left-0 top-0 bottom-0 w-[3px] bg-amber-400 opacity-0 group-hover:opacity-80 transition-opacity rounded-l-lg"></div>
+<div class="flex flex-col gap-2 pl-2">
+<div class="flex items-start justify-between gap-4">
+<div class="flex-1">
+<span class="bg-error-container/50 text-on-error-container px-1.5 py-0.5 rounded font-mono text-[11px] line-through">Listen music</span>
+<span class="material-symbols-outlined text-[14px] text-outline mx-1 align-middle">arrow_forward</span>
+<span class="bg-secondary-fixed/50 text-on-secondary-fixed px-1.5 py-0.5 rounded font-mono text-[11px] font-medium">Listen to music</span>
+</div>
+<button class="text-outline hover:text-on-surface transition-colors p-0.5">
+<span class="material-symbols-outlined text-[16px]">more_horiz</span>
+</button>
+</div>
+<p class="font-hint-text text-hint-text text-on-surface-variant">Missing preposition 'to'.</p>
+</div>
+</div>
+<!-- Pattern Item 3 -->
+<div class="p-padding-standard border-b border-outline-variant/30 last:border-0 hover:bg-white/60 transition-colors cursor-default relative group">
+<div class="flex flex-col gap-2 pl-2">
+<div class="flex items-start justify-between gap-4">
+<div class="flex-1">
+<span class="bg-error-container/50 text-on-error-container px-1.5 py-0.5 rounded font-mono text-[11px] line-through">Explain me</span>
+<span class="material-symbols-outlined text-[14px] text-outline mx-1 align-middle">arrow_forward</span>
+<span class="bg-secondary-fixed/50 text-on-secondary-fixed px-1.5 py-0.5 rounded font-mono text-[11px] font-medium">Explain to me</span>
+</div>
+<button class="text-outline hover:text-on-surface transition-colors p-0.5">
+<span class="material-symbols-outlined text-[16px]">more_horiz</span>
+</button>
+</div>
+<p class="font-hint-text text-hint-text text-on-surface-variant">Need 'to' before the pronoun.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Tiny contextual sparkline area -->
+<div class="flex items-center justify-between pt-padding-tight px-1">
+<span class="font-label-compact text-label-compact text-outline">Clarity Score</span>
+<div class="flex gap-[2px] items-end h-3">
+<div class="w-1 h-2 bg-outline-variant rounded-sm"></div>
+<div class="w-1 h-1.5 bg-outline-variant rounded-sm"></div>
+<div class="w-1 h-2.5 bg-tertiary-fixed-dim rounded-sm"></div>
+<div class="w-1 h-3 bg-tertiary-fixed-dim rounded-sm"></div>
+<div class="w-1 h-2.5 bg-tertiary-fixed-dim rounded-sm"></div>
+</div>
+</div>
+</div>
+<!-- SETTINGS PREVIEW (Visually distinct, normally hidden but shown for prompt requirements) -->
+<div class="p-padding-loose flex flex-col gap-padding-loose border-t border-outline-variant/20 bg-surface/30 mt-4 pb-8">
+<h2 class="font-popover-heading text-popover-heading text-on-surface opacity-50 mb-[-8px]">Settings (Preview)</h2>
+<section>
+<h3 class="font-label-compact text-label-compact text-on-surface-variant mb-2 uppercase tracking-widest">Provider</h3>
+<div class="bg-white/50 rounded-lg border border-outline-variant/30 flex flex-col p-1">
+<div class="flex items-center justify-between p-2">
+<span class="font-hint-text text-hint-text text-on-surface">Base URL</span>
+<span class="font-mono text-[11px] text-on-surface-variant">api.openai.com</span>
+</div>
+<div class="flex items-center justify-between p-2 border-t border-outline-variant/20">
+<span class="font-hint-text text-hint-text text-on-surface">Model</span>
+<div class="flex items-center gap-1 bg-surface-container-highest/50 px-2 py-0.5 rounded">
+<span class="font-hint-text text-hint-text">GPT-4o</span>
+<span class="material-symbols-outlined text-[14px]">expand_more</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-2 border-t border-outline-variant/20">
+<span class="font-hint-text text-hint-text text-on-surface">API Key</span>
+<span class="font-hint-text text-hint-text text-tertiary-container flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">lock</span> Saved locally
+                             </span>
+</div>
+</div>
+</section>
+<section>
+<h3 class="font-label-compact text-label-compact text-on-surface-variant mb-2 uppercase tracking-widest">Privacy</h3>
+<div class="bg-white/50 rounded-lg border border-outline-variant/30 flex flex-col p-1">
+<div class="flex items-center justify-between p-2">
+<span class="font-hint-text text-hint-text text-on-surface">App Filtering</span>
+<span class="font-hint-text text-hint-text text-primary">Allowlist mode</span>
+</div>
+<div class="flex items-center justify-between p-2 border-t border-outline-variant/20">
+<span class="font-hint-text text-hint-text text-on-surface">Pause listening</span>
+<div class="w-7 h-4 bg-outline-variant/50 rounded-full relative cursor-pointer">
+<div class="absolute left-0.5 top-0.5 w-3 h-3 bg-white rounded-full shadow-sm"></div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- Footer (From JSON) -->
+<footer class="bg-white/40 dark:bg-[#1A2421]/40 backdrop-blur-[30px] rounded-b-lg border-t border-white/20 dark:border-white/5 flex justify-between items-center px-4 py-3 w-full shrink-0 shadow-inner z-10">
+<div class="flex gap-4">
+<a class="font-manrope text-[11px] font-medium opacity-70 text-emerald-900/40 dark:text-emerald-100/40 hover:text-emerald-600 dark:hover:text-emerald-200 underline decoration-emerald-500/30 cursor-pointer transition-opacity" href="#">Open full history</a>
+<a class="font-manrope text-[11px] font-medium opacity-70 text-emerald-900/40 dark:text-emerald-100/40 hover:text-emerald-600 dark:hover:text-emerald-200 underline decoration-emerald-500/30 cursor-pointer transition-opacity" href="#">Export CSV</a>
+</div>
+<a aria-label="Accessibility settings" class="font-manrope text-[11px] font-medium opacity-70 text-emerald-900/40 dark:text-emerald-100/40 hover:text-emerald-600 dark:hover:text-emerald-200 cursor-pointer transition-opacity flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[14px]">settings_accessibility</span>
+</a>
+</footer>
+</main>
+</body></html>
